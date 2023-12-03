@@ -1,0 +1,26 @@
+<annotation>
+	<folder>deer</folder>
+	<filename>5ac4da2957.jpg</filename>
+	<path>C:\Users\JakeR\Desktop\Repos\cv\CS-4337-Group-5-Final-Project\data\deer\5ac4da2957.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>420</width>
+		<height>315</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>deer</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>99</xmin>
+			<ymin>73</ymin>
+			<xmax>376</xmax>
+			<ymax>255</ymax>
+		</bndbox>
+	</object>
+</annotation>
