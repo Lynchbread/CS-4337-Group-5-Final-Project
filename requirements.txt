@@ -1,0 +1,7 @@
+tensorflow
+tensorflow-object-detection-api
+lxml
+jupyter
+matplotlib
+keras
+pillow
