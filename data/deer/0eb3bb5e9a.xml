@@ -1,0 +1,26 @@
+<annotation>
+	<folder>deer</folder>
+	<filename>0eb3bb5e9a.jpg</filename>
+	<path>C:\Sync\CodingProjects\Eclipse\CS-4337-Group-5-Final-Project\data\deer\0eb3bb5e9a.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>350</width>
+		<height>467</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>deer</name>
+		<pose>Unspecified</pose>
+		<truncated>1</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>41</xmin>
+			<ymin>44</ymin>
+			<xmax>348</xmax>
+			<ymax>467</ymax>
+		</bndbox>
+	</object>
+</annotation>
