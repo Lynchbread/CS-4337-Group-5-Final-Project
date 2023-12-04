@@ -16,7 +16,7 @@ def extract_frames(video_filepath, frame_rate = 1):
 
         if success == True:
             if frame_number % frame_rate == 0:
-                cv2.imwrite('data\\images\\extracted_frames\\frame_'+str(frame_number)+'.jpg', frame)
+                #cv2.imwrite('data\\images\\extracted_frames\\frame_'+str(frame_number)+'.jpg', frame)
                 frames.append(frame)
         else:
             break
