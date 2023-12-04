@@ -27,8 +27,10 @@ model = tf.keras.models.Sequential([
     tf.keras.layers.MaxPooling2D((2, 2)),
     tf.keras.layers.Flatten(),
     tf.keras.layers.Dense(128, activation='relu'),
-    tf.keras.layers.Dense(10, activation='softmax')  # Adjust the output size based on your problem
+    tf.keras.layers.Dense(1, activation='sigmoid')  # Binary classification with one neuron and sigmoid activation
 ])
+
+model.summary()
 
 # Step 4: Compile your model
 model.compile(optimizer='adam',
