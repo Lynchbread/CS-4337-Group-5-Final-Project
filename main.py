@@ -1,4 +1,5 @@
 from extract_frames import extract_frames
+from detect_motion import detect_motion
 
 def main():
 
