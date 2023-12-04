@@ -21,7 +21,11 @@ for image in image_list:
     if height > top_height:
         top_height = height
 
+<<<<<<< HEAD
 output_path = path + '/resized/'
 
 for image in image_list:
     
+=======
+output_path = path + '/resized'
+>>>>>>> 779957702235092989c0588aa744877c61350b1d
