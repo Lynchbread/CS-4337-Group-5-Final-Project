@@ -1,7 +1,10 @@
 import cv2
 import os
 
-def extract_frames(video_filepath):
+# frame_rate = 1 extractes every frame
+# frame_rate = 2 extracts every other frame
+# frame_rate = 3 extractes every third frame, etc
+def extract_frames(video_filepath, frame_rate = 1):
 
     video = cv2.VideoCapture(video_filepath)
 
@@ -12,8 +15,9 @@ def extract_frames(video_filepath):
         success, frame = video.read()
 
         if success == True:
-            cv2.imwrite('/data/images'+str(frame_number)+'.jpg', frame)
-            frames.append(frame)
+            if frame_number % frame_rate == 0:
+                cv2.imwrite('data\\images\\extracted_frames\\frame_'+str(frame_number)+'.jpg', frame)
+                frames.append(frame)
         else:
             break
         frame_number += 1
