@@ -49,9 +49,9 @@ def main():
     frames, i = extract_frames(video_path, 1), 0
     
     # Validate frame being correctly accessed from list
-    frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
-    plt.imshow(frames[len(frames) - 1])
-    plt.show()
+    # frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
+    # plt.imshow(frames[len(frames) - 1])
+    # plt.show()
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
@@ -65,6 +65,8 @@ def main():
         # Introduce delay, stop playback if 'q' pressed
         if cv.waitKey(delay) & 0xFF == ord('q'):
             break
+
+        i += 1
 
     # Exit program gracefully
     video.release()
