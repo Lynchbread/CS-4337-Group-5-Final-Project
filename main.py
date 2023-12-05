@@ -1,5 +1,9 @@
 from extract_frames import extract_frames
 from detect_motion import detect_motion
+from get_road_lines import get_road_lines
+
+import cv2
+
 
     # Get first frame, set as 'prev'
 
@@ -29,10 +33,15 @@ from detect_motion import detect_motion
 
 def main():
 
-    video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
+    video_path = 'data/videos/The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
 
     frames = extract_frames(video_path, 5)
 
+    line_image = get_road_lines(frames[0])
+
+    cv2.imshow('road lines', line_image)
+    cv2.waitKey(0)  # Wait indefinitely for a key press
+    cv2.destroyAllWindows()  # Close all OpenCV windows
 
 
 if __name__ == '__main__':
