@@ -40,7 +40,7 @@ def main():
     # Get video capture, fps, and delay value for playback at original speed
     video = cv.VideoCapture(video_path)
     fps = video.get(cv.CAP_PROP_FPS)
-    delay = int((1 / fps) * 1000) * 2
+    delay = int((1 / fps) * 1000)
 
     # Get first frame in video
     frame_exists, current_frame = video.read()
@@ -56,6 +56,14 @@ def main():
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
+        # # Set previous, next frames
+        if i == 0:                          # Case may need attention for frame differencing
+            prev_frame = current_frame
+        else:
+            prev_frame = frames[i - 1]
+        
+        next_frame = frames[i + 1]
+
         # Show current_frame
         cv.imshow('frame', current_frame)
 
@@ -66,7 +74,7 @@ def main():
         if cv.waitKey(delay) & 0xFF == ord('q'):
             break
 
-        i += 1
+        # i += 1
 
     # Exit program gracefully
     video.release()
