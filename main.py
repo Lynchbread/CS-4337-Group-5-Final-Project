@@ -76,11 +76,7 @@ def main():
         next_frame = frames[i + 1]
         """
 
-<<<<<<< HEAD
         if i >= frame_rate:
-=======
-        if i >= 5:
->>>>>>> cc15660bb1476ad205744e2cc840f30dc5d31520
             prev_frame = frames[i - frame_rate]
             next_frame = frames[i + frame_rate]
 
