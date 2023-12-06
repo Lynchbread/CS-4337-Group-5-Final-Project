@@ -2,7 +2,6 @@ import cv2
 import numpy as np
 
 # Decting road. Additional bugs to fix:
-# elimanate the edges detected on boarder of the frame image
 # clean road edge line detection
 
 def get_road_lines(frame):
@@ -20,7 +19,6 @@ def get_road_lines(frame):
     mask = cv2.inRange(hsv, lower_gray, upper_gray)
 
     # Apply dilation to fill in the small black holes
-    # NOTE: not working
     kernel = np.ones((9, 9), np.uint8)
     # Apply dilation to binary_img
     mask_dilated = cv2.dilate(mask, kernel, iterations=1)
