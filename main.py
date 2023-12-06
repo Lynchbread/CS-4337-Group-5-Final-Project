@@ -64,9 +64,14 @@ def main():
     # plt.imshow(frames[len(frames) - 1])
     # plt.show()
 
+    #for j in range(len(frames)):
+    #    cv2.imwrite('data\\images\\extracted_frames\\' + str(j) + '.jpg', frames[j])
+
     frame_rate = 5
+    leeway = 1
+    if leeway > frame_rate: leeway = frame_rate
     object_centers = []
-    direction = 0
+    signals = []
     signal_counter = 0
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
@@ -90,26 +95,25 @@ def main():
             object_centers = identify_objects(prev_frame, current_frame, next_frame)
             road_contours = get_road_lines(frames[i])
 
-            if prev_object_centers:
-                direction = get_direction_one(prev_object_centers, object_centers, road_contours)
+            signals.append(get_direction_one(prev_object_centers, object_centers, road_contours))
 
-        # objects must be stationary for 25 frames straight in order for signal to go from red to yellow
-        if direction == 1:
-            signal_counter = 25
+            # objects must be stationary for 30 frames straight in order for signal to go from red to yellow
+            if all(signals[i-leeway:i]):
+                signal_counter = 30
+            else:
+                signal_counter -= 1
         else:
-            signal_counter -= 1
+            signals.append(False)
 
         # Draws color signal indicator in upper left corner
         if signal_counter > 0:
             current_frame[0:100,0:100] = (0,0,128)  # Maintains red
-        elif signal_counter > -50:
+        elif signal_counter > -60:
             current_frame[0:100,0:100] = (0,128,128) # Yellow if objects are stationary
         else:
             current_frame[0:100,0:100] = (0,128,0) # Green if no movement has been detected for a while
 
         
-            
-
         # Show current_frame
         cv2.imshow('frame', current_frame)
 
@@ -122,15 +126,6 @@ def main():
 
         i += 1
 
-    
-
-    """
-    line_image = get_road_lines(frames[0])
-
-    cv2.imshow('road lines', line_image)
-    cv2.waitKey(0)  # Wait indefinitely for a key press
-    cv2.destroyAllWindows()  # Close all OpenCV windows
-    """
     # Exit program gracefully
     video.release()
     cv2.destroyAllWindows()

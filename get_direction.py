@@ -1,9 +1,8 @@
 import cv2
 import numpy as np
 
-# Returns 1 if getting closer
-# Returns 0 if stationary
-# Returns -1 if getting further away
+# Returns True if getting closer
+# Returns False if stationary or moving away
 
 def get_direction_any(prev_object_centers, object_centers, road_contours):
 
@@ -16,7 +15,7 @@ def get_direction_any(prev_object_centers, object_centers, road_contours):
 def get_direction_one(prev_object_centers, object_centers, road_contours):
 
     if not prev_object_centers or not object_centers:
-        return 0
+        return False
 
     prev_distances = []
     current_distances = []
@@ -30,18 +29,10 @@ def get_direction_one(prev_object_centers, object_centers, road_contours):
     prev_min = min(prev_distances)
     curr_min = min(current_distances)
 
-    direction = prev_min / curr_min
-
-    upper = 1.001
-    lower = 0.999
-
-    if direction > upper:
-        return 1
+    if curr_min == 0.0 or prev_min / curr_min > 1.001:
+        return True
     
-    if direction < lower:
-        return -1
-    
-    return 0
+    return False
 
 def match_centers(object_centers, prev_object_centers):
 
