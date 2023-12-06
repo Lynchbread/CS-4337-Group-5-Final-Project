@@ -5,7 +5,7 @@ import numpy as np
 def identify_objects(past_frame, current_frame, future_frame):
 
     # For testing. Delete later
-    identify_objects.call += 1
+    #identify_objects.call += 1
 
     hsv_frame = cv2.cvtColor(current_frame, cv2.COLOR_BGR2HSV)
     h = 0.5

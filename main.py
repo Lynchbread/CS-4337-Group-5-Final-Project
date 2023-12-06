@@ -45,7 +45,7 @@ def main():
     #cv2.destroyAllWindows()
 
     # Hardcode video path for testing
-    video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
+    video_path = 'data\\videos\\DeerVideo.mp4'
     # frames = extract_frames(video_path, 5)
 
     # Get video capture, fps, and delay value for playback at original speed
