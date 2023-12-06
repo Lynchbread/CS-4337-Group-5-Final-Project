@@ -44,7 +44,7 @@ def main():
     #cv2.destroyAllWindows()
 
     # Hardcode video path for testing
-    video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
+    video_path = 'data/videos/The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
     # frames = extract_frames(video_path, 5)
 
     # Get video capture, fps, and delay value for playback at original speed
@@ -80,7 +80,10 @@ def main():
 
         if i >= frame_rate:
             prev_frame = frames[i - frame_rate]
-            next_frame = frames[i + frame_rate]
+
+            if i + frame_rate < len(frames):
+                next_frame = frames[i + frame_rate]
+            else: break
 
             rectangles = identify_objects(prev_frame, current_frame, next_frame)
 
