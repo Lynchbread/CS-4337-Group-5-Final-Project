@@ -35,7 +35,6 @@ def main():
 
     # Hardcode video path for testing
     video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
-    # frames = extract_frames(video_path, 5)
 
     # Get video capture, fps, and delay value for playback at original speed
     video = cv.VideoCapture(video_path)
@@ -47,6 +46,11 @@ def main():
     
     # Get list containing every frame in video
     frames, i = extract_frames(video_path, 1), 0
+
+    # To make road edge lines using first first frame:
+    # - Use canny edge detection on first frame,
+    # - Create map of road by extracting color channel,
+    #
     
     # Validate frame being correctly accessed from list
     # frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
@@ -56,7 +60,7 @@ def main():
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
-        # # Set previous, next frames
+        # Set previous, next frames
         if i == 0:                          # Case may need attention for frame differencing
             prev_frame = current_frame
         else:
@@ -74,7 +78,7 @@ def main():
         if cv.waitKey(delay) & 0xFF == ord('q'):
             break
 
-        # i += 1
+        i += 1
 
     # Exit program gracefully
     video.release()
