@@ -1,6 +1,7 @@
 import cv2
 from extract_frames import extract_frames
 from detect_motion import detect_motion
+from get_road_lines import get_road_lines
 from identify_objects import identify_objects
 
     # Get first frame, set as 'prev'
@@ -30,6 +31,7 @@ from identify_objects import identify_objects
     # If no components (or car) no signal 
 
 def main():
+
 
     #video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
 
@@ -94,6 +96,12 @@ def main():
 
         i += 1
 
+    line_image = get_road_lines(frames[0])
+
+    cv2.imshow('road lines', line_image)
+    cv2.waitKey(0)  # Wait indefinitely for a key press
+    cv2.destroyAllWindows()  # Close all OpenCV windows
+    
     # Exit program gracefully
     video.release()
     cv2.destroyAllWindows()
