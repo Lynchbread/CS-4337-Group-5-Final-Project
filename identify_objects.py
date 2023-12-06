@@ -21,7 +21,7 @@ def identify_objects(past_frame, current_frame, future_frame):
 
     #combined_mask = mask1 | mask2
     combined_mask = mask1
-    
+
     # For testing. Delete later
     if (identify_objects.call == 100):
         brown_extracted = cv2.bitwise_and(current_frame, current_frame, mask=combined_mask)
@@ -65,7 +65,7 @@ def identify_objects(past_frame, current_frame, future_frame):
             right_column = left_column + int(stats[i, cv2.CC_STAT_WIDTH])
 
             rectangles.append((top_row, bottom_row, left_column, right_column))
-            draw_rectangle(current_frame, top_row, bottom_row, left_column, right_column)
+            #draw_rectangle(current_frame, top_row, bottom_row, left_column, right_column)
     
     areas = []
     for rec in rectangles:

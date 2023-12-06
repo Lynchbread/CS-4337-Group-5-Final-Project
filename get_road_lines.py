@@ -47,6 +47,13 @@ def get_road_lines(frame):
 
     contours = cv2.findContours(mask_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
+    #color_image = cv2.cvtColor(mask_dilated, cv2.COLOR_GRAY2BGR)
+    #color_image = cv2.drawContours(color_image, contours[0], -1, (255, 0, 0), 3)
+
+    #cv2.imshow('edges', color_image)
+    #cv2.waitKey(0)  # Wait indefinitely for a key press
+    #cv2.destroyAllWindows()  # Close all OpenCV windows
+
     return contours[0]
 
     # Edge detection
