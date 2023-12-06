@@ -89,7 +89,10 @@ def main():
 
         if i >= frame_rate:
             prev_frame = frames[i - frame_rate]
-            next_frame = frames[i + frame_rate]
+
+            if i + frame_rate < len(frames):
+                next_frame = frames[i + frame_rate]
+            else: break
 
             prev_object_centers = object_centers
             object_centers = identify_objects(prev_frame, current_frame, next_frame)
