@@ -69,21 +69,26 @@ def identify_objects(past_frame, current_frame, future_frame):
     areas.sort(key=lambda x: x[1], reverse=True)
 
     i = 0
-    rectangles.clear
+    #rectangles.clear
+    object_centers = []
 
     for area in areas:
         if i < 5:
-            rectangles.append((area[0][0], area[0][1], area[0][2], area[0][3]))
+            #rectangles.append((area[0][0], area[0][1], area[0][2], area[0][3]))
+            object_centers.append(rec_center(area[0][0], area[0][1], area[0][2], area[0][3]))
             draw_rectangle(current_frame, area[0][0], area[0][1], area[0][2], area[0][3])
             i += 1
     
-    return rectangles
+    return object_centers
 
 # For testing. Delete later
 identify_objects.call = 0
 
 def rec_area(top, bottom, left, right):
     return (top - bottom) * (right - left)
+
+def rec_center(top, bottom, left, right):
+    return ((top+bottom)/2, (left+right)/2)
 
 # Code pulled from Assignment 9, Modifies rectangle color.
 def draw_rectangle(img, top, bottom, left, right):

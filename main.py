@@ -3,6 +3,7 @@ from extract_frames import extract_frames
 from detect_motion import detect_motion
 from get_road_lines import get_road_lines
 from identify_objects import identify_objects
+from get_direction import get_direction_any, get_direction_one
 
     # Get first frame, set as 'prev'
 
@@ -64,6 +65,9 @@ def main():
     # plt.show()
 
     frame_rate = 5
+    object_centers = []
+    direction = 0
+    signal_counter = 0
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
@@ -82,7 +86,28 @@ def main():
             prev_frame = frames[i - frame_rate]
             next_frame = frames[i + frame_rate]
 
-            rectangles = identify_objects(prev_frame, current_frame, next_frame)
+            prev_object_centers = object_centers
+            object_centers = identify_objects(prev_frame, current_frame, next_frame)
+            road_contours = get_road_lines(frames[i])
+
+            if prev_object_centers:
+                direction = get_direction_one(prev_object_centers, object_centers, road_contours)
+
+        if direction == 1:
+            signal_counter = 25
+        else:
+            signal_counter -= 1
+
+        # Draws color signal indicator in upper left corner
+        if signal_counter > 0:
+            current_frame[0:100,0:100] = (0,0,128)  # Maintains red
+        elif signal_counter > -50:
+            current_frame[0:100,0:100] = (0,128,128) # Yellow if objects are stationary
+        else:
+            current_frame[0:100,0:100] = (0,128,0) # Green if no movement has been detected for a while
+
+        
+            
 
         # Show current_frame
         cv2.imshow('frame', current_frame)
@@ -96,12 +121,15 @@ def main():
 
         i += 1
 
+    
+
+    """
     line_image = get_road_lines(frames[0])
 
     cv2.imshow('road lines', line_image)
     cv2.waitKey(0)  # Wait indefinitely for a key press
     cv2.destroyAllWindows()  # Close all OpenCV windows
-    
+    """
     # Exit program gracefully
     video.release()
     cv2.destroyAllWindows()

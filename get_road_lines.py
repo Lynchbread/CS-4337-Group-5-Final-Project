@@ -25,9 +25,29 @@ def get_road_lines(frame):
     # Apply dilation to binary_img
     mask_dilated = cv2.dilate(mask, kernel, iterations=1)
 
-    cv2.imshow('edges', mask_dilated)
-    cv2.waitKey(0)  # Wait indefinitely for a key press
-    cv2.destroyAllWindows()  # Close all OpenCV windows
+    mask_dilated = cv2.bitwise_not(mask_dilated)
+
+    # Clean up sides of image
+    mask_dilated[0:,0:200] = 0
+    mask_dilated[0:,-200:] = 0
+
+    contours = cv2.findContours(mask_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+    #color_image = cv2.cvtColor(mask_dilated, cv2.COLOR_GRAY2BGR)
+    #color_image = cv2.drawContours(color_image, contours[0], -1, (255, 0, 0), 3)
+
+    #cv2.imshow('edges', color_image)
+    #cv2.waitKey(0)  # Wait indefinitely for a key press
+    #cv2.destroyAllWindows()  # Close all OpenCV windows
+
+    for contour in contours[0]:
+        area = cv2.contourArea(contour)
+        if area < 500:
+            mask_dilated = cv2.drawContours(mask_dilated, [contour], 0, (0, 0, 0), -1)
+
+    contours = cv2.findContours(mask_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
+
+    return contours[0]
 
     # Edge detection
     edges = cv2.Canny(mask_dilated, 50, 150)
