@@ -32,6 +32,10 @@ def get_road_lines(frame):
     # Edge detection
     edges = cv2.Canny(mask_dilated, 50, 150)
 
+    # Remove edges along image border
+    edges[0:,0:200] = 0
+    edges[0:,-200:] = 0
+
     cv2.imshow('edges', edges)
     cv2.waitKey(0)  # Wait indefinitely for a key press
     cv2.destroyAllWindows()  # Close all OpenCV windows
