@@ -102,16 +102,17 @@ def main():
 
             # objects must be stationary for 30 frames straight in order for signal to go from red to yellow
             if all(signals[i-leeway:i]):
-                signal_counter = 30
+                signal_counter = 1
             else:
                 signal_counter -= 1
         else:
             signals.append(False)
 
+        
         # Draws color signal indicator in upper left corner
         if signal_counter > 0:
             current_frame[0:100,0:100] = (0,0,128)  # Maintains red
-        elif signal_counter > -60:
+        elif signal_counter > -1:
             current_frame[0:100,0:100] = (0,128,128) # Yellow if objects are stationary
         else:
             current_frame[0:100,0:100] = (0,128,0) # Green if no movement has been detected for a while
