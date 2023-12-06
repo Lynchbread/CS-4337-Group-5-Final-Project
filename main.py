@@ -93,10 +93,7 @@ def main():
             if prev_object_centers:
                 direction = get_direction_one(prev_object_centers, object_centers, road_contours)
 
-<<<<<<< HEAD
         # objects must be stationary for 25 frames straight in order for signal to go from red to yellow
-=======
->>>>>>> 7c4880f847fa215dd89a14ccd118bd1fe8545d0d
         if direction == 1:
             signal_counter = 25
         else:
