@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 
 from extract_frames import extract_frames
 from detect_motion import detect_motion
+from get_line_coordinates import get_lines
 
     # Get first frame, set as 'prev'
 
@@ -34,7 +35,8 @@ from detect_motion import detect_motion
 def main():
 
     # Hardcode video path for testing
-    video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
+    # video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
+    video_path = 'data/videos/video0.mp4'
 
     # Get video capture, fps, and delay value for playback at original speed
     video = cv.VideoCapture(video_path)
@@ -44,32 +46,40 @@ def main():
     # Get first frame in video
     frame_exists, current_frame = video.read()
     
+    # get_lines(current_frame)
+
     # Get list containing every frame in video
     frames, i = extract_frames(video_path, 1), 0
 
     # To make road edge lines using first first frame:
     # - Use canny edge detection on first frame,
-    # - Create map of road by extracting color channel,
-    #
+    # - Create map of road by extracting color channel
     
     # Validate frame being correctly accessed from list
-    # frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
-    # plt.imshow(frames[len(frames) - 1])
-    # plt.show()
+    frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
+    plt.imshow(frames[len(frames) - 1])
+    plt.show()
+
+
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
         # Set previous, next frames
-        if i == 0:                          # Case may need attention for frame differencing
+        if i < 1:                          # Case may need attention for frame differencing
             prev_frame = current_frame
         else:
             prev_frame = frames[i - 1]
         
-        next_frame = frames[i + 1]
+        if i + 1 > len(frames):
+            next_frame = frames[len(frames) - 1]
+        else:
+            next_frame = frames[i + 1]
+
+        motion = detect_motion(prev_frame, current_frame, next_frame)
 
         # Show current_frame
-        cv.imshow('frame', current_frame)
+        cv.imshow('motion', motion)
 
         # Extract current frame
         frame_exists, current_frame = video.read()
