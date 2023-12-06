@@ -50,31 +50,27 @@ def main():
 
     # Get list containing every frame in video
     frames, i = extract_frames(video_path, 1), 0
-
-    # To make road edge lines using first first frame:
-    # - Use canny edge detection on first frame,
-    # - Create map of road by extracting color channel
     
     # Validate frame being correctly accessed from list
-    frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
-    plt.imshow(frames[len(frames) - 1])
-    plt.show()
+    # frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
+    # plt.imshow(frames[len(frames) - 1])
+    # plt.show()
 
-
+    frame_difference = 15
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
         # Set previous, next frames
-        if i < 1:                          # Case may need attention for frame differencing
+        if i < frame_difference:                          # Case may need attention for frame differencing
             prev_frame = current_frame
         else:
-            prev_frame = frames[i - 1]
+            prev_frame = frames[i - frame_difference]
         
         if i + 1 > len(frames):
-            next_frame = frames[len(frames) - 1]
+            next_frame = frames[len(frames) - frame_difference]
         else:
-            next_frame = frames[i + 1]
+            next_frame = frames[i + frame_difference]
 
         motion = detect_motion(prev_frame, current_frame, next_frame)
 

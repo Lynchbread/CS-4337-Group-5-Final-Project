@@ -21,9 +21,9 @@ def detect_motion (prev_frame, current_frame, next_frame):
 
     thresh, binary_frame = cv.threshold(motion, thresh=10, maxval=255, type=cv.THRESH_BINARY)
 
-    kernel=np.ones((3,3)).astype(np.uint8)
+    kernel=np.ones((4,4)).astype(np.uint8)
 
-    binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_CLOSE, kernel)
+    binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_OPEN, kernel)
 
     # nb_components, output, stats, centroids = cv.connectedComponentsWithStats(binary_frame, connectivity=4)
 
