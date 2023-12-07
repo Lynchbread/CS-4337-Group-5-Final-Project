@@ -73,6 +73,7 @@ def main():
     object_centers = []
     signals = []
     signal_counter = 0
+    first_contours = get_road_lines(current_frame)
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
@@ -87,7 +88,9 @@ def main():
             prev_object_centers = object_centers
             object_centers = identify_objects(prev_frame, current_frame, next_frame)
             road_contours = get_road_lines(current_frame)
-            for contour in road_contours:
+            #for contour in road_contours:
+            #    current_frame = cv2.drawContours(current_frame, [contour], 0, (0, 0, 0), 3)
+            for contour in first_contours:
                 current_frame = cv2.drawContours(current_frame, [contour], 0, (0, 0, 0), 3)
 
             signals.append(get_direction(prev_object_centers, object_centers, road_contours))
