@@ -56,18 +56,18 @@ def main():
     # plt.imshow(frames[len(frames) - 1])
     # plt.show()
 
-    frame_difference = 15
+    frame_difference = 3
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
-        # Set previous, next frames
+        # Set previous, next frames within bounds
         if i < frame_difference:                          # Case may need attention for frame differencing
             prev_frame = current_frame
         else:
             prev_frame = frames[i - frame_difference]
         
-        if i + 1 > len(frames):
+        if i + frame_difference > len(frames) - 1:
             next_frame = frames[len(frames) - frame_difference]
         else:
             next_frame = frames[i + frame_difference]

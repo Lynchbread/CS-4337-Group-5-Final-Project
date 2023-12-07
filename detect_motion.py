@@ -21,13 +21,40 @@ def detect_motion (prev_frame, current_frame, next_frame):
 
     thresh, binary_frame = cv.threshold(motion, thresh=10, maxval=255, type=cv.THRESH_BINARY)
 
-    kernel=np.ones((4,4)).astype(np.uint8)
+    binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_OPEN, kernel=np.ones((3,3)).astype(np.uint8))
+    binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_CLOSE, kernel=np.ones((10,10)).astype(np.uint8))
 
-    binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_OPEN, kernel)
+    nb_components, output, stats, centroids = cv.connectedComponentsWithStats(binary_frame, connectivity=4)
 
-    # nb_components, output, stats, centroids = cv.connectedComponentsWithStats(binary_frame, connectivity=4)
+    # print(nb_components)
 
-    # max_label, max_size = max([(i, stats[i, cv.CC_STAT_AREA]) for i in range(1, nb_components)], key=lambda x: x[1])
+    areas = []
+    if nb_components > 1:
+        for i in range(1, nb_components):
+            areas.append(i, stats[i, cv.CC_STAT_AREA])
+
+        areas = sorted(areas, axis=1, reverse=True)[:5]
+
+        print(areas)
+
+    # largest_components = sorted(stats, reverse=True)[:5]
+
+    # print(len(largest_components))
+
+    # for i in range(1, nb_components):
+    #         if stats[i, cv.CC_STAT_AREA] > 1500:
+    #             top_row = int(stats[i, cv.CC_STAT_TOP])
+    #             bottom_row = top_row + int(stats[i, cv.CC_STAT_HEIGHT])
+    #             left_column = int(stats[i, cv.CC_STAT_LEFT])
+    #             right_column = left_column + int(stats[i, cv.CC_STAT_WIDTH])
+
+
+    if nb_components > 1:
+        max_label, max_size = max([(i, stats[i, cv.CC_STAT_AREA]) for i in range(1, nb_components)], key=lambda x: x[1])
+
+
+
+        binary_frame[output != max_label] = 0
 
     # binary_frame[output != max_label] = 0
 
