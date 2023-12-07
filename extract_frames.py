@@ -3,13 +3,13 @@ import cv2
 # frame_rate = 1 extracts every frame
 # frame_rate = 2 extracts every other frame
 # frame_rate = 3 extracts every third frame, etc
-def extract_frames(video_filepath, frame_rate = 1):
+def extract_frames(video_filepath, framerate = 1):
 
     # Loads video
     video = cv2.VideoCapture(video_filepath)
 
     frames = []
-    frame_number = 0
+    # frame_number = 0
 
     while (True):
         # Extracts next frame from video
@@ -17,11 +17,11 @@ def extract_frames(video_filepath, frame_rate = 1):
 
         # Appends extracted frame to list
         if success == True:
-            if frame_number % frame_rate == 0:
-                frames.append(frame)
+            # if frame_number % frame_rate == 0:
+            frames.append(frame)
         else:
             break
-        frame_number += 1
+        # frame_number += 1
 
     video.release()
 

@@ -1,6 +1,5 @@
 import cv2
 from extract_frames import extract_frames
-from detect_motion import detect_motion
 from get_road_lines import get_road_lines
 from identify_objects import identify_objects
 from get_direction import get_direction
@@ -19,14 +18,13 @@ def main():
     frame_exists, current_frame = video.read()
     
     # Get list containing every frame in video
-    frames, i = extract_frames(video_path, 1), 0
+    frames = extract_frames(video_path)
 
     # Determines how far back/forward to compare current frame.
-    frame_rate = 5
+    frame_diff, leeway, i = 5, 1, 0
 
     # How many previous frames in a row the deer needed to move closer to the road to trigger the signal
-    leeway = 1
-    if leeway > frame_rate: leeway = frame_rate
+    if leeway > frame_diff: leeway = frame_diff
 
     object_centers = [] # List of coordinates containing the center of the deer
     signals = []        # List of signals generated. One for each frame.
@@ -35,13 +33,13 @@ def main():
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
-        if i >= frame_rate:
+        if i >= frame_diff:
 
-            prev_frame = frames[i - frame_rate]
+            prev_frame = frames[i - frame_diff]
 
             # Bounds check to prevent trying to grab frames past the end of the video.
-            if i + frame_rate < len(frames):
-                next_frame = frames[i + frame_rate]
+            if i + frame_diff < len(frames):
+                next_frame = frames[i + frame_diff]
             else: break
 
             prev_object_centers = object_centers
@@ -96,6 +94,6 @@ def main():
     video.release()
     cv2.destroyAllWindows()
 
-
+ 
 if __name__ == '__main__':
     main()
