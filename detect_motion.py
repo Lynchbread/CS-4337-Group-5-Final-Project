@@ -28,39 +28,19 @@ def detect_motion (prev_frame, current_frame, next_frame):
 
     # print(nb_components)
 
-    areas = []
-    if nb_components > 1:
-        for i in range(1, nb_components):
-            areas.append(i, stats[i, cv.CC_STAT_AREA])
+    # print(np.argsort(-stats[:,-1])[:3])
 
-        areas = sorted(areas, axis=1, reverse=True)[:5]
+    # areas = []
+    # if nb_components > 1:
+    #     for i in range(1, nb_components):
+    #         areas.append((i, stats[i, cv.CC_STAT_AREA]))
 
-        print(areas)
+    #     areas = sorted(areas, reverse=True, key=lambda x: x[1])[:5]
 
-    # largest_components = sorted(stats, reverse=True)[:5]
-
-    # print(len(largest_components))
-
-    # for i in range(1, nb_components):
-    #         if stats[i, cv.CC_STAT_AREA] > 1500:
-    #             top_row = int(stats[i, cv.CC_STAT_TOP])
-    #             bottom_row = top_row + int(stats[i, cv.CC_STAT_HEIGHT])
-    #             left_column = int(stats[i, cv.CC_STAT_LEFT])
-    #             right_column = left_column + int(stats[i, cv.CC_STAT_WIDTH])
-
-
-    if nb_components > 1:
-        max_label, max_size = max([(i, stats[i, cv.CC_STAT_AREA]) for i in range(1, nb_components)], key=lambda x: x[1])
-
-
-
-        binary_frame[output != max_label] = 0
+    # if nb_components > 1:
+    #     max_label, max_size = max([(i, stats[i, cv.CC_STAT_AREA]) for i in range(1, nb_components)], key=lambda x: x[1])
+    #     binary_frame[output != max_label] = 0
 
     # binary_frame[output != max_label] = 0
-
-    # plt.figure(figsize=(5,5))
-    # plt.imshow(motion, cmap='gray')
-    # plt.title('not_green')
-    # plt.show()
 
     return binary_frame
