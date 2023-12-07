@@ -7,8 +7,6 @@ import numpy as np
 
 def get_road_lines(frame):
 
-
-
     # Convert to HSV color space
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
@@ -26,6 +24,8 @@ def get_road_lines(frame):
     mask_dilated = cv2.dilate(mask, kernel, iterations=1)
 
     mask_dilated = cv2.bitwise_not(mask_dilated)
+
+    #mask_dilated2 = np.copy(mask_dilated)
 
     # Clean up sides of image
     mask_dilated[0:,0:200] = 0
@@ -57,15 +57,15 @@ def get_road_lines(frame):
     return contours[0]
 
     # Edge detection
-    edges = cv2.Canny(mask_dilated, 50, 150)
+    edges = cv2.Canny(mask_dilated2, 50, 150)
 
     # Remove edges along image border
-    edges[0:,0:200] = 0
-    edges[0:,-200:] = 0
+    #edges[0:,0:200] = 0
+    #edges[0:,-200:] = 0
 
-    cv2.imshow('edges', edges)
-    cv2.waitKey(0)  # Wait indefinitely for a key press
-    cv2.destroyAllWindows()  # Close all OpenCV windows
+    #cv2.imshow('edges', edges)
+    #cv2.waitKey(0)  # Wait indefinitely for a key press
+    #cv2.destroyAllWindows()  # Close all OpenCV windows
 
     # Hough Line Transform
     lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 50, minLineLength=100, maxLineGap=50)
@@ -78,6 +78,6 @@ def get_road_lines(frame):
             cv2.line(line_frame, (x1, y1), (x2, y2), (255, 0, 0), 5)
 
 
-    return line_frame
+    return contours[0], line_frame
 
     

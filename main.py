@@ -86,13 +86,15 @@ def main():
 
             prev_object_centers = object_centers
             object_centers = identify_objects(prev_frame, current_frame, next_frame)
-            road_contours = get_road_lines(frames[i])
+            road_contours = get_road_lines(current_frame)
+            for contour in road_contours:
+                current_frame = cv2.drawContours(current_frame, [contour], 0, (0, 0, 0), 3)
 
             signals.append(get_direction(prev_object_centers, object_centers, road_contours))
 
             # objects must be stationary for 30 frames straight in order for signal to go from red to yellow
             if all(signals[i-leeway:i]):
-                signal_counter = 15
+                signal_counter = 30
             else:
                 signal_counter -= 1
         else:
@@ -102,7 +104,7 @@ def main():
         # Draws color signal indicator in upper left corner
         if signal_counter > 0:
             current_frame[0:100,0:100] = (0,0,128)  # Maintains red
-        elif signal_counter > -30:
+        elif signal_counter > -60:
             current_frame[0:100,0:100] = (0,128,128) # Yellow if objects are stationary
         else:
             current_frame[0:100,0:100] = (0,128,0) # Green if no movement has been detected for a while
