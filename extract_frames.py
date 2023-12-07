@@ -1,4 +1,4 @@
-import cv2
+import cv2 as cv
 
 # frame_rate = 1 extracts every frame
 # frame_rate = 2 extracts every other frame
@@ -6,12 +6,13 @@ import cv2
 def extract_frames(video_filepath, framerate = 1):
 
     # Loads video
-    video = cv2.VideoCapture(video_filepath)
+    video = cv.VideoCapture(video_filepath)
 
     frames = []
     # frame_number = 0
 
     while (True):
+
         # Extracts next frame from video
         success, frame = video.read()
 
@@ -25,4 +26,4 @@ def extract_frames(video_filepath, framerate = 1):
 
     video.release()
 
-    return frames # frames is a list or array of frames in the video.
+    return frames       # frames is a list or array of frames in the video.

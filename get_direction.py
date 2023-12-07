@@ -1,4 +1,4 @@
-import cv2
+import cv2 as cv
 import numpy as np
 
 # Returns True if getting closer
@@ -29,8 +29,8 @@ def get_direction(prev_object_centers, object_centers, road_contours):
 
     # If the deer object is currently touching the road, or if the deer has moved
     # 5 percent or more closer to the road compared to the previous frame, return True.
-    if curr_min == 0.0 or prev_min / curr_min > 1.05:
-        return True
+    if prev_min == 0.0 or curr_min / prev_min > 1.05:
+        return True         # Should this be inverted??
     
     # Returns false if the closest deer in the image is either stationary, or is
     # moving away from the road.
@@ -41,9 +41,10 @@ def get_direction(prev_object_centers, object_centers, road_contours):
 def get_shortest_distance(center, contours):
 
     # Create a binary image to draw contours on
-    image = np.zeros((500, 500), dtype=np.uint8)
+    image = np.zeros((500,500), dtype=np.uint8)
+
     # Draw the contours onto the image
-    cv2.drawContours(image, contours, -1, (255), 1)
+    cv.drawContours(image, contours, -1, (255), 1)
 
     # Stores the shortest distance
     shortest_distance = np.float32('inf')
@@ -52,7 +53,7 @@ def get_shortest_distance(center, contours):
     # the closest pixel of the contour. Compares all of the distances
     # and keeps the shortest one.
     for contour in contours:
-        distance = cv2.pointPolygonTest(contour, center, True)
+        distance = cv.pointPolygonTest(contour, center, True)
         if distance < shortest_distance:
             shortest_distance = distance
     
