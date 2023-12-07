@@ -9,7 +9,7 @@ def extract_frames(video_filepath, framerate = 1):
     video = cv2.VideoCapture(video_filepath)
 
     frames = []
-    # frame_number = 0
+    frame_number = 0
 
     while (True):
         # Extracts next frame from video
@@ -17,11 +17,11 @@ def extract_frames(video_filepath, framerate = 1):
 
         # Appends extracted frame to list
         if success == True:
-            # if frame_number % frame_rate == 0:
-            frames.append(frame)
+            if frame_number % frame_rate == 0:
+                frames.append(frame)
         else:
             break
-        # frame_number += 1
+        frame_number += 1
 
     video.release()
 
