@@ -4,15 +4,8 @@ import numpy as np
 # Returns True if getting closer
 # Returns False if stationary or moving away
 
-def get_direction_any(prev_object_centers, object_centers, road_contours):
 
-    matched_centers = match_centers(object_centers, prev_object_centers)
-
-    for match in match_centers:
-        g = 1
-
-
-def get_direction_one(prev_object_centers, object_centers, road_contours):
+def get_direction(prev_object_centers, object_centers, road_contours):
 
     if not prev_object_centers or not object_centers:
         return False
@@ -33,24 +26,6 @@ def get_direction_one(prev_object_centers, object_centers, road_contours):
         return True
     
     return False
-
-def match_centers(object_centers, prev_object_centers):
-
-    matched_centers = []
-
-    for center in prev_object_centers:
-        nearest = center
-        shortest_distance = np.inf(float)
-        for prev_center in object_centers:
-            distance = get_distance(prev_center, center)
-            if distance < shortest_distance:
-                shortest_distance = distance
-                nearest = prev_center
-        if shortest_distance < 50:
-            match_centers.append(center, nearest)
-        else:
-            match_centers.append(center, None)
-
 
 
 def get_shortest_distance(center, contours):
