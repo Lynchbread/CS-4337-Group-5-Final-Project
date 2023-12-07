@@ -17,7 +17,7 @@ def extract_frames(video_filepath, framerate = 1):
 
         # Appends extracted frame to list
         if success == True:
-            if frame_number % frame_rate == 0:
+            if frame_number % framerate == 0:
                 frames.append(frame)
         else:
             break
