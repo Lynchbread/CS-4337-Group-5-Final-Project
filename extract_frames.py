@@ -1,22 +1,23 @@
 import cv2
-import os
 
 # frame_rate = 1 extracts every frame
 # frame_rate = 2 extracts every other frame
 # frame_rate = 3 extracts every third frame, etc
 def extract_frames(video_filepath, frame_rate = 1):
 
+    # Loads video
     video = cv2.VideoCapture(video_filepath)
 
     frames = []
     frame_number = 0
 
     while (True):
+        # Extracts next frame from video
         success, frame = video.read()
 
+        # Appends extracted frame to list
         if success == True:
             if frame_number % frame_rate == 0:
-                #cv2.imwrite('data\\images\\extracted_frames\\frame_'+str(frame_number)+'.jpg', frame)
                 frames.append(frame)
         else:
             break

@@ -3,7 +3,7 @@ from extract_frames import extract_frames
 from detect_motion import detect_motion
 from get_road_lines import get_road_lines
 from identify_objects import identify_objects
-from get_direction import get_direction_any, get_direction_one
+from get_direction import get_direction
 
     # Get first frame, set as 'prev'
 
@@ -33,20 +33,8 @@ from get_direction import get_direction_any, get_direction_one
 
 def main():
 
-
-    #video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
-
-    #frames = extract_frames(video_path, 5)
-
-    #identify_objects(frames[5], frames[6], frames[7])
-
-    #cv2.imshow("image", new_image)
-    #cv2.waitKey(0)
-    #cv2.destroyAllWindows()
-
     # Hardcode video path for testing
     video_path = 'data\\videos\\DeerVideo.mp4'
-    # frames = extract_frames(video_path, 5)
 
     # Get video capture, fps, and delay value for playback at original speed
     video = cv2.VideoCapture(video_path)
@@ -58,47 +46,44 @@ def main():
     
     # Get list containing every frame in video
     frames, i = extract_frames(video_path, 1), 0
-    
-    # Validate frame being correctly accessed from list
-    # frames[i] = cv.cvtColor(frames[i], cv.COLOR_BGR2RGB)
-    # plt.imshow(frames[len(frames) - 1])
-    # plt.show()
 
-    #for j in range(len(frames)):
-    #    cv2.imwrite('data\\images\\extracted_frames\\' + str(j) + '.jpg', frames[j])
-
+    # Determines how far back/forward to compare current frame.
     frame_rate = 5
+
+    # How many previous frames in a row the deer needed to move closer to the road to trigger the signal
     leeway = 1
     if leeway > frame_rate: leeway = frame_rate
-    object_centers = []
-    signals = []
-    signal_counter = 0
+
+    object_centers = [] # List of coordinates containing the center of the deer
+    signals = []        # List of signals generated. One for each frame.
+    signal_counter = 0  # Used for determing signal display length later in the code
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
 
-        """
-        # # Set previous, next frames
-        if i == 0:                          # Case may need attention for frame differencing
-            prev_frame = current_frame
-        else:
-            prev_frame = frames[i - 1]
-        
-        next_frame = frames[i + 1]
-        """
-
         if i >= frame_rate:
+
             prev_frame = frames[i - frame_rate]
 
+            # Bounds check to prevent trying to grab frames past the end of the video.
             if i + frame_rate < len(frames):
                 next_frame = frames[i + frame_rate]
             else: break
 
             prev_object_centers = object_centers
-            object_centers = identify_objects(prev_frame, current_frame, next_frame)
-            road_contours = get_road_lines(frames[i])
 
-            signals.append(get_direction_one(prev_object_centers, object_centers, road_contours))
+            # Identifies the center of all moving deer in the frame.
+            object_centers = identify_objects(prev_frame, current_frame, next_frame)
+
+            # Gets the contours of the road in the frame.
+            road_contours = get_road_lines(current_frame)
+
+            # Draws the road contours onto the current frame
+            for contour in road_contours:
+                current_frame = cv2.drawContours(current_frame, [contour], 0, (0, 0, 0), 3)
+
+            # Gets whether or not the deer are moving closer to the road, and signals appropriately
+            signals.append(get_direction(prev_object_centers, object_centers, road_contours))
 
             # objects must be stationary for 30 frames straight in order for signal to go from red to yellow
             if all(signals[i-leeway:i]):
@@ -108,15 +93,18 @@ def main():
         else:
             signals.append(False)
 
+        
         # Draws color signal indicator in upper left corner
         if signal_counter > 0:
             current_frame[0:100,0:100] = (0,0,128)  # Maintains red
         elif signal_counter > -60:
-            current_frame[0:100,0:100] = (0,128,128) # Yellow if objects are stationary
+            current_frame[0:100,0:100] = (0,128,128) # Yellow if objects are stationary or moving away from the road for at least 1 second
         else:
-            current_frame[0:100,0:100] = (0,128,0) # Green if no movement has been detected for a while
+            current_frame[0:100,0:100] = (0,128,0) # Green if objects are stationary or moving away from the road for at least 3 seconds
 
-        
+        # Allows for infinite length videos by preventing signal_counter from going to negative infinity.
+        if signal_counter < -1000: signal_counter = -500
+
         # Show current_frame
         cv2.imshow('frame', current_frame)
 
@@ -127,6 +115,7 @@ def main():
         if cv2.waitKey(delay) & 0xFF == ord('q'):
             break
 
+        # iterate to next frame
         i += 1
 
     # Exit program gracefully
