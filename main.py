@@ -43,9 +43,13 @@ def main():
     #cv2.waitKey(0)
     #cv2.destroyAllWindows()
 
+
     # Hardcode video path for testing
-    video_path = 'data/videos/The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
-    # frames = extract_frames(video_path, 5)
+    video_path = 'data\\videos\\The Deer Go Marching One by One [vZq88Iw8dsM].mp4'
+    
+    frames = extract_frames(video_path, 5)
+
+    print(len(frames))
 
     # Get video capture, fps, and delay value for playback at original speed
     video = cv2.VideoCapture(video_path)
@@ -99,7 +103,9 @@ def main():
 
         i += 1
 
-    line_image = get_road_lines(frames[0])
+
+
+    line_image = get_road_lines(frames[60])
 
     cv2.imshow('road lines', line_image)
     cv2.waitKey(0)  # Wait indefinitely for a key press

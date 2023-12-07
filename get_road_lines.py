@@ -1,12 +1,11 @@
 import cv2 
 import numpy as np
 
+
 # Decting road. Additional bugs to fix:
 # clean road edge line detection
 
 def get_road_lines(frame):
-
-
 
     # Convert to HSV color space
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
@@ -31,7 +30,7 @@ def get_road_lines(frame):
     edges = cv2.Canny(mask_dilated, 50, 150)
 
     # Remove edges along image border
-    edges[0:,0:200] = 0
+    edges[0:,0:195] = 0
     edges[0:,-200:] = 0
 
     cv2.imshow('edges', edges)
@@ -39,9 +38,9 @@ def get_road_lines(frame):
     cv2.destroyAllWindows()  # Close all OpenCV windows
 
     # Hough Line Transform
-    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 50, minLineLength=100, maxLineGap=50)
+    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 50, minLineLength=150, maxLineGap=50)
 
-    # Draw lines on the original frame: NEEDS RESTRUCTURING
+    # Draw lines on the original frame:
     line_frame = np.copy(frame)
     if lines is not None:
         for line in lines:
@@ -51,4 +50,5 @@ def get_road_lines(frame):
 
     return line_frame
 
-    
+
+
