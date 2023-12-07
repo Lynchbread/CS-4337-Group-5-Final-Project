@@ -22,7 +22,7 @@ def get_direction(prev_object_centers, object_centers, road_contours):
     prev_min = min(prev_distances)
     curr_min = min(current_distances)
 
-    if curr_min == 0.0 or prev_min / curr_min > 1.001:
+    if curr_min == 0.0 or prev_min / curr_min > 1.05:
         return True
     
     return False
@@ -43,6 +43,3 @@ def get_shortest_distance(center, contours):
             shortest_distance = distance
     
     return shortest_distance
-
-def get_distance(point1, point2):
-    return np.sqrt((point1[0]-point2[0])**2 + (point1[1]-point2[1])**2)

@@ -42,7 +42,7 @@ def get_road_lines(frame):
 
     for contour in contours[0]:
         area = cv2.contourArea(contour)
-        if area < 500:
+        if area < 1000:
             mask_dilated = cv2.drawContours(mask_dilated, [contour], 0, (0, 0, 0), -1)
 
     contours = cv2.findContours(mask_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
