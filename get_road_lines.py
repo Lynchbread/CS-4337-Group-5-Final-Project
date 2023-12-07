@@ -1,10 +1,7 @@
 import cv2 
 import numpy as np
 
-# Decting road. Additional bugs to fix:
-# elimanate the edges detected on boarder of the frame image
-# clean road edge line detection
-
+# Returns the contours of the road in the frame
 def get_road_lines(frame):
 
     # Convert to HSV color space
@@ -18,66 +15,28 @@ def get_road_lines(frame):
     mask = cv2.inRange(hsv, lower_gray, upper_gray)
 
     # Apply dilation to fill in the small black holes
-    # NOTE: not working
     kernel = np.ones((9, 9), np.uint8)
+
     # Apply dilation to binary_img
     mask_dilated = cv2.dilate(mask, kernel, iterations=1)
 
+    # Invert image
     mask_dilated = cv2.bitwise_not(mask_dilated)
-
-    #mask_dilated2 = np.copy(mask_dilated)
 
     # Clean up sides of image
     mask_dilated[0:,0:200] = 0
     mask_dilated[0:,-200:] = 0
 
+    # Find all contours in image.
     contours = cv2.findContours(mask_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
-    #color_image = cv2.cvtColor(mask_dilated, cv2.COLOR_GRAY2BGR)
-    #color_image = cv2.drawContours(color_image, contours[0], -1, (255, 0, 0), 3)
-
-    #cv2.imshow('edges', color_image)
-    #cv2.waitKey(0)  # Wait indefinitely for a key press
-    #cv2.destroyAllWindows()  # Close all OpenCV windows
-
+    # Removes noise from the image be removing any small contours, leaving only the road contours.
     for contour in contours[0]:
         area = cv2.contourArea(contour)
         if area < 1000:
             mask_dilated = cv2.drawContours(mask_dilated, [contour], 0, (0, 0, 0), -1)
 
+    # Reaquires the road contours now that image is denoised.
     contours = cv2.findContours(mask_dilated, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
-    #color_image = cv2.cvtColor(mask_dilated, cv2.COLOR_GRAY2BGR)
-    #color_image = cv2.drawContours(color_image, contours[0], -1, (255, 0, 0), 3)
-
-    #cv2.imshow('edges', color_image)
-    #cv2.waitKey(0)  # Wait indefinitely for a key press
-    #cv2.destroyAllWindows()  # Close all OpenCV windows
-
     return contours[0]
-
-    # Edge detection
-    edges = cv2.Canny(mask_dilated2, 50, 150)
-
-    # Remove edges along image border
-    #edges[0:,0:200] = 0
-    #edges[0:,-200:] = 0
-
-    #cv2.imshow('edges', edges)
-    #cv2.waitKey(0)  # Wait indefinitely for a key press
-    #cv2.destroyAllWindows()  # Close all OpenCV windows
-
-    # Hough Line Transform
-    lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 50, minLineLength=100, maxLineGap=50)
-
-    # Draw lines on the original frame: NEEDS RESTRUCTURING
-    line_frame = np.copy(frame)
-    if lines is not None:
-        for line in lines:
-            x1, y1, x2, y2 = line[0]
-            cv2.line(line_frame, (x1, y1), (x2, y2), (255, 0, 0), 5)
-
-
-    return contours[0], line_frame
-
-    
