@@ -23,26 +23,26 @@ def detect_motion (prev_frame, current_frame, next_frame):
 
     thresh, binary_frame = cv.threshold(motion, thresh=10, maxval=255, type=cv.THRESH_BINARY)
 
-    binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_OPEN, kernel=np.ones((3,3)).astype(np.uint8))
+    # binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_OPEN, kernel=np.ones((1,1)).astype(np.uint8))
     binary_frame = cv.morphologyEx(binary_frame, cv.MORPH_CLOSE, kernel=np.ones((15,15)).astype(np.uint8))
 
-    # nb_components, output, stats, centroids = cv.connectedComponentsWithStats(binary_frame, connectivity=4)
+    nb_components, output, stats, centroids = cv.connectedComponentsWithStats(binary_frame, connectivity=4)
 
     # print(nb_components)
 
-    # print(np.argsort(-stats[:,-1])[:3])
+    components = np.argsort(-stats[:,-1])[1:4]
 
-    # areas = []
+    # components = []
     # if nb_components > 1:
     #     for i in range(1, nb_components):
-    #         areas.append((i, stats[i, cv.CC_STAT_AREA]))
+    #         components.append((i, stats[i, cv.CC_STAT_AREA]))
 
-    #     areas = sorted(areas, reverse=True, key=lambda x: x[1])[:5]
+    #     components = sorted(components, reverse=True, key=lambda x: x[1])[:3]
 
     # if nb_components > 1:
     #     max_label, max_size = max([(i, stats[i, cv.CC_STAT_AREA]) for i in range(1, nb_components)], key=lambda x: x[1])
     #     binary_frame[output != max_label] = 0
 
-    # binary_frame[output != max_label] = 0
+    binary_frame[output != components] = 0
 
     return binary_frame

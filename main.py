@@ -56,7 +56,7 @@ def main():
     # plt.imshow(frames[len(frames) - 1])
     # plt.show()
 
-    frame_difference = 3
+    frame_difference = 10
 
     # Loop until video ends (exit using 'ctrl+C' or simply 'q')
     while frame_exists:
