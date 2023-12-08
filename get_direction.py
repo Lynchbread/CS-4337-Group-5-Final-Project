@@ -29,8 +29,8 @@ def get_direction(prev_object_centers, object_centers, road_contours):
 
     # If the deer object is currently touching the road, or if the deer has moved
     # 5 percent or more closer to the road compared to the previous frame, return True.
-    if prev_min == 0.0 or curr_min / prev_min > 1.05:
-        return True         # Should this be inverted??
+    if curr_min == 0.0 or prev_min / curr_min > 1.05:
+        return True
     
     # Returns false if the closest deer in the image is either stationary, or is
     # moving away from the road.
@@ -41,7 +41,7 @@ def get_direction(prev_object_centers, object_centers, road_contours):
 def get_shortest_distance(center, contours):
 
     # Create a binary image to draw contours on
-    image = np.zeros((500,500), dtype=np.uint8)
+    image = np.zeros((1280,720), dtype=np.uint8)
 
     # Draw the contours onto the image
     cv.drawContours(image, contours, -1, (255), 1)
