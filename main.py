@@ -7,7 +7,8 @@ from get_direction import get_direction
 def main():
 
     # Hardcode video path for testing
-    video_path = 'data\\videos\\DeerVideo.mp4'
+    # video_path = 'data\\videos\\DeerVideo.mp4'
+    video_path = 'data/videos/DeerVideo.mp4'
 
     # Get video capture, fps, and delay value for playback at original speed
     video = cv2.VideoCapture(video_path)
